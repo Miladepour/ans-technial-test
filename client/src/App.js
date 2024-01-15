@@ -1,13 +1,19 @@
+import { Route, Routes } from "react-router-dom";
+import './App.css';
 import ConvertCurrencies from "./components/convertCurrencies"
 import CurrenciesDisplay from "./components/currenciesDisplay"
-import './App.css';
+import Navbar from "./components/navigation";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
     <div className="App">
-  <h1>ANS TEST</h1>
-  <ConvertCurrencies />
-  <CurrenciesDisplay />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<CurrenciesDisplay />} />
+        <Route path="/convert" element={<ConvertCurrencies />} />
+      </Routes>
     </div>
   );
 }
