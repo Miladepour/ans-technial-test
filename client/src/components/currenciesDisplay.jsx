@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {Table, Spinner} from "react-bootstrap";
 
 
 export default function CurrenciesDisplay() {
@@ -13,7 +14,6 @@ export default function CurrenciesDisplay() {
           return { name: key, ...response.data[key] };
         });
         setCurrencies(currenciesArray);
-        console.log(currenciesArray);
       })
       .catch((error) => {
         console.log(error);
@@ -22,7 +22,33 @@ export default function CurrenciesDisplay() {
 
   return (
     <div>
-
+      <Table striped bordered hover variant="dark">
+        <thead>
+          <tr>
+            <th>Currency</th>
+            <th>15 Minutes</th>
+            <th>Last</th>
+            <th>Buy</th>
+            <th>Sell</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currencies.map((currency) => (
+            <tr key={currency.name}>
+              <td>
+                {currency.name}
+              </td>
+              <td>
+                <Spinner animation="grow" variant="danger" size="sm" />{" "}
+                {currency["15m"]}
+              </td>
+              <td>{currency.last}</td>
+              <td>{currency.buy}</td>
+              <td>{currency.sell}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 }
