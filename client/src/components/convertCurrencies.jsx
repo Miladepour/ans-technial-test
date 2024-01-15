@@ -23,7 +23,11 @@ export default function ConvertCurrencies() {
       });
   }, []);
   const handleAmountChange = (event) => {
-    setAmount(event.target.value);
+    const newAmount = event.target.value;
+    setAmount(newAmount);
+    if (newAmount === '' || newAmount === '0') {
+      setConvertedValue('0');
+    }
   };
   const handleFromCurrencyChange = (event) => {
     setFromCurrency(event.target.value);
