@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {Table, Spinner} from "react-bootstrap";
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 
 export default function CurrenciesDisplay() {
@@ -36,7 +37,7 @@ export default function CurrenciesDisplay() {
           {currencies.map((currency) => (
             <tr key={currency.name}>
               <td>
-                {currency.name}
+                {currency.name} {getSymbolFromCurrency(currency.name)}
               </td>
               <td>
                 <Spinner animation="grow" variant="danger" size="sm" />{" "}
