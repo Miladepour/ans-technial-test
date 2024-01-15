@@ -3,7 +3,10 @@ import axios from "axios";
 import { Button, Card, Form } from "react-bootstrap";
 
 export default function ConvertCurrencies() {
-const [currencies, setCurrencies] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
+  const [amount, setAmount] = useState(0);
+  const [fromCurrency, setFromCurrency] = useState("GBP");
+  const [toCurrency, setToCurrency] = useState("EUR");
 
   useEffect(() => {
     axios
@@ -24,13 +27,23 @@ const [currencies, setCurrencies] = useState([]);
         <Card.Header as="h5">Currency Converter</Card.Header>
         <Card.Body>
           <Card.Title>Enter your amount</Card.Title>
-          <Form.Control type="number" />
+          <Form.Control type="number" value={amount} />
           <p>Select your currency</p>
           <p>From</p>
-          <Form.Select>
-          </Form.Select>
+          <Form.Select value={fromCurrency}>
+            {currencies.map((currency) => (
+              <option key={currency.name} value={currency.name}>
+                {currency.name}
+              </option>
+            ))}
+            </Form.Select>
           <p>To</p>
-          <Form.Select >
+          <Form.Select value={toCurrency}>
+            {currencies.map((currency) => (
+              <option key={currency.name} value={currency.name}>
+                {currency.name}
+              </option>
+            ))}
           </Form.Select>
           <Button variant="primary" className="mt-2">
             Convert
