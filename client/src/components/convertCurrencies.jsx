@@ -7,6 +7,7 @@ export default function ConvertCurrencies() {
   const [amount, setAmount] = useState(0);
   const [fromCurrency, setFromCurrency] = useState("GBP");
   const [toCurrency, setToCurrency] = useState("EUR");
+  const [convertedValue, setConvertedValue] = useState("");
 
   useEffect(() => {
     axios
@@ -21,16 +22,39 @@ export default function ConvertCurrencies() {
         console.log(error);
       });
   }, []);
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+  };
+  const handleFromCurrencyChange = (event) => {
+    setFromCurrency(event.target.value);
+  };
+  const handleToCurrencyChange = (event) => {
+    setToCurrency(event.target.value);
+  };
+
+  const convertCurrency = () => {
+    const fromRate = currencies.find((cur) => cur.name === fromCurrency)?.last;
+    const toRate = currencies.find((cur) => cur.name === toCurrency)?.last;
+    if (fromRate && toRate) {
+      const result = (amount / fromRate) * toRate;
+      setConvertedValue(result.toFixed(2));
+    }
+  };
+  useEffect(() => {
+    if (amount && fromCurrency && toCurrency) {
+      convertCurrency();
+    }
+  }, [amount, fromCurrency, toCurrency, currencies]);
   return (
     <div>
       <Card>
         <Card.Header as="h5">Currency Converter</Card.Header>
         <Card.Body>
           <Card.Title>Enter your amount</Card.Title>
-          <Form.Control type="number" value={amount} />
+          <Form.Control type="number" value={amount} onChange={handleAmountChange} />
           <p>Select your currency</p>
           <p>From</p>
-          <Form.Select value={fromCurrency}>
+          <Form.Select value={fromCurrency} onChange={handleFromCurrencyChange}>
             {currencies.map((currency) => (
               <option key={currency.name} value={currency.name}>
                 {currency.name}
@@ -38,16 +62,21 @@ export default function ConvertCurrencies() {
             ))}
             </Form.Select>
           <p>To</p>
-          <Form.Select value={toCurrency}>
+          <Form.Select value={toCurrency} onChange={handleToCurrencyChange}>
             {currencies.map((currency) => (
               <option key={currency.name} value={currency.name}>
                 {currency.name}
               </option>
             ))}
           </Form.Select>
-          <Button variant="primary" className="mt-2">
+          <Button variant="primary" className="mt-2" onClick={convertCurrency}>
             Convert
           </Button>
+          {convertedValue && (
+            <Card.Text className="mt-2">
+              {amount} {fromCurrency} is equal to {convertedValue} {toCurrency}
+            </Card.Text>
+          )}
         </Card.Body>
       </Card>
     </div>
